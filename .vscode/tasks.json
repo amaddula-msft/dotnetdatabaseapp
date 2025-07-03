@@ -1,0 +1,62 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build"
+			],
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "run",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"run"
+			],
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "docker-start-db",
+			"type": "shell",
+			"command": "docker-compose",
+			"args": [
+				"up",
+				"sqlserver",
+				"-d"
+			],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "docker-stop",
+			"type": "shell",
+			"command": "docker-compose",
+			"args": [
+				"down"
+			],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "docker-full-start",
+			"type": "shell",
+			"command": "docker-compose",
+			"args": [
+				"up",
+				"--build"
+			],
+			"group": "build",
+			"problemMatcher": []
+		}
+	]
+}
