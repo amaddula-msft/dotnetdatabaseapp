@@ -128,14 +128,55 @@ When deployed to Azure:
 
 ## 🧪 Step 6: Test Your Deployment
 
-1. Go to `https://your-app-name.azurewebsites.net`
-2. You should see a default page or Swagger UI
-3. Test the API endpoints:
+### 🔍 **Verify Database Connection Testing:**
+
+Your application automatically tests the database connection on startup. Here's how to verify it's working:
+
+#### **1. Check Application Startup Logs:**
+1. Go to **Azure Portal** → Your App Service
+2. Navigate to **"Monitoring"** → **"Log stream"**
+3. Look for these log messages during startup:
+   ```
+   Creating database if it doesn't exist...
+   Database is ready!
+   Testing database connection...
+   Found 0 existing products
+   Adding sample products...
+   Created product: Sample Product 1 (ID: 1)
+   Created product: Sample Product 2 (ID: 2)
+   Database verification successful! Total products: 2
+   Product: 1 - Sample Product 1 - $29.99
+   Product: 2 - Sample Product 2 - $49.99
+   ```
+
+#### **2. Test the API Endpoints:**
+1. **Visit Swagger UI**: `https://your-app-name.azurewebsites.net/swagger`
+2. **Test GET endpoint**: `https://your-app-name.azurewebsites.net/api/products`
+   - Should return the 2 sample products created during startup
+3. **Test individual endpoints**:
    - `GET /api/products` - Get all products
    - `POST /api/products` - Create a product
    - `GET /api/products/{id}` - Get specific product
    - `PUT /api/products/{id}` - Update product
    - `DELETE /api/products/{id}` - Delete product
+
+#### **3. What Success Looks Like:**
+- ✅ **Logs show**: Database creation and sample data insertion
+- ✅ **API returns**: JSON array with 2 sample products
+- ✅ **Swagger UI**: Loads and shows all API endpoints
+- ✅ **No errors**: In Log stream or when calling endpoints
+
+#### **4. If Database Connection Fails:**
+You'll see error logs like:
+```
+Database connection failed: [specific error message]
+Make sure Azure SQL Database is configured correctly...
+```
+
+**Common fixes:**
+- Check connection string in Azure Portal Configuration
+- Verify Azure SQL Database firewall allows Azure services
+- Confirm database server and credentials are correct
 
 ## 🔍 API Testing Examples
 
@@ -214,9 +255,18 @@ curl -X POST https://your-app-name.azurewebsites.net/api/products \
 
 ✅ **Web API** with CRUD operations for products  
 ✅ **Entity Framework Core** with Azure SQL Database  
+✅ **Automatic Database Testing** - Verifies connection on startup  
+✅ **Sample Data Creation** - Adds test products if database is empty  
+✅ **Comprehensive Logging** - Shows database operations in Azure logs  
 ✅ **Swagger/OpenAPI** documentation  
 ✅ **Production-ready** deployment package  
 ✅ **Azure App Service** compatible
+
+### **🔧 Built-in Database Verification:**
+- **Startup Testing**: Automatically tests database connection when app starts
+- **Sample Data**: Creates 2 test products if database is empty
+- **Operation Logging**: Logs all database operations for troubleshooting
+- **Error Handling**: Graceful handling of connection failures
 
 Your API endpoints:
 - `GET /api/products` - List all products
