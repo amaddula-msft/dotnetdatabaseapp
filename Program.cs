@@ -1,108 +1,47 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using DotNetSqlApp.Data;
 using DotNetSqlApp.Services;
-using DotNetSqlApp.Models;
 
-// Create host builder with dependency injection and configuration
-var builder = Host.CreateApplicationBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
-// Add configuration
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-builder.Configuration.AddEnvironmentVariables();
+// Add services to the container
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-// Determine which connection string to use
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-// If running in Docker, the environment variable will override the appsettings.json
-var envConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
-if (!string.IsNullOrEmpty(envConnectionString))
-{
-    connectionString = envConnectionString;
-    Console.WriteLine("Using Docker SQL Server connection string");
-}
-else
-{
-    Console.WriteLine("Using LocalDB connection string from appsettings.json");
-}
-
-// Add Entity Framework
+// Add Entity Framework with connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services
+// Add our custom services
 builder.Services.AddScoped<IProductService, ProductService>();
 
-var host = builder.Build();
+var app = builder.Build();
 
-// Ensure database is created and run migrations
-using (var scope = host.Services.CreateScope())
+// Ensure database is created
+using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     try
     {
-        Console.WriteLine("Ensuring database is created...");
         await context.Database.EnsureCreatedAsync();
-        Console.WriteLine("Database is ready!");
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Database connection failed: {ex.Message}");
-        Console.WriteLine("Make sure SQL Server container is running. See README.md for instructions.");
-        return;
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred creating the database.");
     }
 }
 
-// Demo operations
-using (var scope = host.Services.CreateScope())
+// Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
 {
-    var productService = scope.ServiceProvider.GetRequiredService<IProductService>();
-
-    Console.WriteLine("\n=== .NET SQL Database Demo ===\n");
-
-    // List existing products
-    Console.WriteLine("Existing products:");
-    var products = await productService.GetAllProductsAsync();
-    foreach (var product in products)
-    {
-        Console.WriteLine($"- {product.Id}: {product.Name} - ${product.Price:F2}");
-    }
-
-    // Create a new product
-    Console.WriteLine("\nCreating a new product...");
-    var newProduct = new Product
-    {
-        Name = "Dynamic Product",
-        Description = "Created at runtime",
-        Price = 99.99m
-    };
-
-    var createdProduct = await productService.CreateProductAsync(newProduct);
-    Console.WriteLine($"Created product: {createdProduct.Name} (ID: {createdProduct.Id})");
-
-    // List products again
-    Console.WriteLine("\nUpdated product list:");
-    products = await productService.GetAllProductsAsync();
-    foreach (var product in products)
-    {
-        Console.WriteLine($"- {product.Id}: {product.Name} - ${product.Price:F2} (Created: {product.CreatedAt:yyyy-MM-dd})");
-    }
-
-    // Update the product
-    Console.WriteLine($"\nUpdating product {createdProduct.Id}...");
-    createdProduct.Price = 79.99m;
-    createdProduct.Description = "Updated at runtime";
-    await productService.UpdateProductAsync(createdProduct.Id, createdProduct);
-    Console.WriteLine($"Updated product price to ${createdProduct.Price:F2}");
-
-    // Get specific product
-    var updatedProduct = await productService.GetProductByIdAsync(createdProduct.Id);
-    if (updatedProduct != null)
-    {
-        Console.WriteLine($"Retrieved product: {updatedProduct.Name} - ${updatedProduct.Price:F2}");
-    }
-
-    Console.WriteLine("\n=== Demo completed successfully! ===");
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();

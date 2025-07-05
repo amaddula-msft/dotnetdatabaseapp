@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DotNetSqlApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d71098ed4b22ede375fb9fda4f5e63ed7491a434")]
 [assembly: System.Reflection.AssemblyProductAttribute("DotNetSqlApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DotNetSqlApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
