@@ -163,3 +163,9 @@ C:\Users\amaddula\src\vscodeworkspace\obj\Release\net9.0\refint\DotNetSqlApp.dll
 C:\Users\amaddula\src\vscodeworkspace\obj\Release\net9.0\DotNetSqlApp.pdb
 C:\Users\amaddula\src\vscodeworkspace\obj\Release\net9.0\DotNetSqlApp.genruntimeconfig.cache
 C:\Users\amaddula\src\vscodeworkspace\obj\Release\net9.0\ref\DotNetSqlApp.dll
+C:\Users\amaddula\src\vscodeworkspace\bin\Release\net9.0\publish\web.config
+C:\Users\amaddula\src\vscodeworkspace\bin\Release\net9.0\publish\appsettings.json
+C:\Users\amaddula\src\vscodeworkspace\bin\Release\net9.0\publish\appsettings.Production.json
+C:\Users\amaddula\src\vscodeworkspace\bin\Release\net9.0\publish\DotNetSqlApp.deps.json
+C:\Users\amaddula\src\vscodeworkspace\bin\Release\net9.0\publish\DotNetSqlApp.runtimeconfig.json
+C:\Users\amaddula\src\vscodeworkspace\bin\Release\net9.0\publish\DotNetSqlApp.staticwebassets.endpoints.json

@@ -1,5 +1,11 @@
 C:\Users\amaddula\src\vscodeworkspace\publish\DotNetSqlApp.exe
+C:\Users\amaddula\src\vscodeworkspace\publish\publish\web.config
 C:\Users\amaddula\src\vscodeworkspace\publish\appsettings.json
+C:\Users\amaddula\src\vscodeworkspace\publish\publish\appsettings.json
+C:\Users\amaddula\src\vscodeworkspace\publish\publish\appsettings.Production.json
+C:\Users\amaddula\src\vscodeworkspace\publish\publish\DotNetSqlApp.deps.json
+C:\Users\amaddula\src\vscodeworkspace\publish\publish\DotNetSqlApp.runtimeconfig.json
+C:\Users\amaddula\src\vscodeworkspace\publish\publish\DotNetSqlApp.staticwebassets.endpoints.json
 C:\Users\amaddula\src\vscodeworkspace\publish\DotNetSqlApp.dll
 C:\Users\amaddula\src\vscodeworkspace\publish\DotNetSqlApp.runtimeconfig.json
 C:\Users\amaddula\src\vscodeworkspace\publish\DotNetSqlApp.pdb
