@@ -9,6 +9,7 @@ Your `DotNetSqlApp-Deploy.zip` file contains everything needed to deploy to Azur
 1. **Azure Account** - Sign up at [portal.azure.com](https://portal.azure.com)
 2. **Azure SQL Database** - You'll need to create this first
 3. **.NET 9 SDK** - Installed on your development machine
+4. **ZIP utility** - PowerShell (Windows) or `zip` command (Linux/macOS)
 
 ## 📦 Step 0: Create Your Deployment Package
 
@@ -30,10 +31,25 @@ This creates a production-ready build in the `./publish` folder with:
 - Ready for deployment files
 
 ### **3. Create Deployment ZIP**
+
+#### **Windows (PowerShell):**
 ```powershell
 Compress-Archive -Path .\publish\* -DestinationPath .\DotNetSqlApp-Deploy.zip -Force
 ```
-This creates `DotNetSqlApp-Deploy.zip` containing all files needed for Azure App Service.
+
+#### **Linux/macOS (Terminal):**
+```bash
+cd publish
+zip -r ../DotNetSqlApp-Deploy.zip *
+cd ..
+```
+
+#### **Alternative for Linux/macOS (using tar):**
+```bash
+tar -czf DotNetSqlApp-Deploy.tar.gz -C publish .
+```
+
+This creates `DotNetSqlApp-Deploy.zip` (or `.tar.gz`) containing all files needed for Azure App Service.
 
 ### **What Gets Published:**
 - ✅ `DotNetSqlApp.dll` - Your compiled application
@@ -226,6 +242,11 @@ curl -X POST https://your-app-name.azurewebsites.net/api/products \
 3. **"Publish failed"**: 
    - Ensure project builds successfully: `dotnet build DotNetSqlApp.csproj`
    - Check for compilation errors in your code
+
+4. **ZIP creation issues**:
+   - **Windows**: Use PowerShell, not Command Prompt for `Compress-Archive`
+   - **Linux/macOS**: Ensure `zip` is installed: `sudo apt install zip` (Ubuntu) or `brew install zip` (macOS)
+   - **Alternative**: Use tar format if zip is not available
 
 ### **Configuration Issues:**
 1. **"Connection string is null"**: 
